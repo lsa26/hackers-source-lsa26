@@ -76,7 +76,7 @@ jobs:
           content: |-
             ## Built and pushed image to docker hub
 
-            [Docker Hub](https://hub.docker.com/repository/docker/ldonleycb/hackers-organized/tags)
+            [Docker Hub](https://hub.docker.com/repository/docker/lsa26/al26/tags)
 
             Deployed hackers-organized:${{ cloudbees.scm.sha }}
           format: MARKDOWN
