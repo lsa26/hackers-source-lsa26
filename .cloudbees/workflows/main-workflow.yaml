@@ -5,14 +5,13 @@ on:
   push:
     branches:
       - "**"
-  workflow_dispatch:
 permissions:
   scm-token-own: read
   scm-token-org: read
   id-token: write
 env:
   APP_NAME: hackers-organized
-  NAMESPACE: hackers-organized-lsa26
+  NAMESPACE: hackers-organized-lsa26 # TODO: Replace with your namespace
 jobs:
   test:
     outputs:
@@ -76,7 +75,7 @@ jobs:
           content: |-
             ## Built and pushed image to docker hub
 
-            [Docker Hub](https://hub.docker.com/repository/docker/lsa26/al26/tags)
+            [Docker Hub](https://hub.docker.com/repository/docker/ldonleycb/hackers-organized/tags)
 
             Deployed hackers-organized:${{ cloudbees.scm.sha }}
           format: MARKDOWN
@@ -118,7 +117,7 @@ jobs:
         with:
           orgname: ${{ secrets.SNYK_ORGNAME }}
           token: ${{ secrets.SNYK_TOKEN }}
-          language: LANGUAGE_JS
+          language: "LANGUAGE_JS"
       - name: Fetch SonarQube Issues
         id: FetchSonarQubeIssues
         uses: docker://alpine/git:latest
@@ -150,7 +149,7 @@ jobs:
             | MINOR_COUNT          | ${{ steps.FetchSonarQubeIssues.outputs.MINOR_COUNT }} |
           format: MARKDOWN
   deploy:
-    environment: lsa26
+    environment: DOW Production # TODO: Replace with the name of the environment you just created
     steps:
       - name: Checkout
         uses: cloudbees-io/checkout@v1
@@ -182,11 +181,11 @@ jobs:
       - name: Register_deployed_artifact
         uses: https://github.com/cloudbees-io/register-deployed-artifact@v1
         with:
-          name: ${{ secrets.DOCKERHUB_USER }}/hackers-organized
-          version: ${{ cloudbees.scm.sha }}
-          url: ${{ secrets.DOCKERHUB_USER }}/hackers-organized:${{ cloudbees.scm.sha }}
+          name: "${{ secrets.DOCKERHUB_USER }}/hackers-organized"
+          version: "${{ cloudbees.scm.sha }}"
+          url: "${{ secrets.DOCKERHUB_USER }}/hackers-organized:${{ cloudbees.scm.sha }}"
           digest: ""
-          target-environment: lsa26
+          target-environment: "DOW Production" # TODO: Change to match your environment
     needs:
       - build-container-image
       - scan
